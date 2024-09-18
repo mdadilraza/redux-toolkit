@@ -1,19 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { Card, Button, Alert } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../store/cartSlice';
+import { getProducts } from '../store/productSlice';
+import StatusCode from '../utils/StatusCode';
 
 const Product = () => {
     const dispatch = useDispatch();
-    const [products, setProducts] = useState([]);
+    //const [products, setProducts] = useState([]);
 
+    const {data :products , status} = useSelector(state => state.product)
+   console.log(products);
+   
     useEffect(() => {
-        fetch('https://fakestoreapi.com/products')
-            .then(response => response.json())
-            .then(result => setProducts(result))
-            .catch(error => console.error('Error fetching products:', error));
-    }, []);
+    //     fetch('https://fakestoreapi.com/products')
+    //         .then(response => response.json())
+    //         .then(result => setProducts(result))
+    //         .catch(error => console.error('Error fetching products:', error));
+      dispatch(getProducts())
+}, []
+);
 
+if(status ===StatusCode.LOADING){
+   return <p>Loading ....</p>
+}
+
+if(status ===StatusCode.ERROR) {
+ return <Alert key='danger' variant='danger' className='text-center' >Something went Wrong </Alert>
+}
     const addToCart = (product) => {
         console.log('Adding to cart:', product);
         dispatch(add(product));
