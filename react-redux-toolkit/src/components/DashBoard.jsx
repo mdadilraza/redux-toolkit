@@ -1,8 +1,8 @@
 import React from 'react'
-
+import Product from './Product'
 const DashBoard = () => {
   return (
-    <div>DashBoard</div>
+    <Product/>
   )
 }
 
